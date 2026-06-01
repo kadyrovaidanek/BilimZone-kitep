@@ -6,8 +6,6 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from django.contrib.auth.hashers import check_password, make_password
-from django.conf import settings
-from .services.email_service import send_verification_email
 from django.utils import timezone
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -164,25 +162,14 @@ class SendRegistrationCodeView(APIView):
             },
         )
 
-        try:
-            send_verification_email(email, code)
-        except Exception as exc:
-            return Response(
-                {
-                    "email": f"Не удалось отправить код подтверждения: {type(exc).__name__}: {str(exc)}"
-                },
-                status=status.HTTP_503_SERVICE_UNAVAILABLE,
-            )
-        except Exception as exc:
-            return Response(
-                {
-                    "email": f"Не удалось отправить код подтверждения: {type(exc).__name__}: {str(exc)}"
-                },
-                status=status.HTTP_503_SERVICE_UNAVAILABLE,
-            )
-
+        # DEMO MODE:
+        # Код не отправляется на email, а возвращается во frontend.
+        # Frontend может показать его через alert().
         return Response(
-            {"message": "Код подтверждения отправлен на email"},
+            {
+                "message": "Код подтверждения сгенерирован",
+                "code": code,
+            },
             status=status.HTTP_200_OK,
         )
 

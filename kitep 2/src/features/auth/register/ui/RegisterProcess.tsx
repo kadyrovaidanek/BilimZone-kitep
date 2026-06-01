@@ -54,6 +54,7 @@ export const RegisterProcess = () => {
   const [liveErrors, setLiveErrors] = useState<ErrorMap>({});
 
   const { isAuthenticated, isLoading } = useUserStore();
+
   const {
     completeRegistration,
     sendVerificationCode,
@@ -248,7 +249,6 @@ export const RegisterProcess = () => {
         nextErrors.password = t("register_form.errors.password_required");
       }
 
-
       if (!confirmPassword.trim()) {
         nextErrors.confirmPassword = t(
           "register_form.errors.confirm_password_required",
@@ -433,10 +433,14 @@ export const RegisterProcess = () => {
 
     if (currentStep < steps.length - 1) {
       if (currentStep === 1) {
-        const sent = await sendVerificationCode(data.email);
+        const result = await sendVerificationCode(data.email);
 
-        if (!sent) {
+        if (!result) {
           return;
+        }
+
+        if (result.code) {
+          alert(`Ваш код подтверждения: ${result.code}`);
         }
       }
 
@@ -494,7 +498,13 @@ export const RegisterProcess = () => {
         data={data}
         errors={visibleErrors}
         updateField={updateField}
-        onResendCode={() => sendVerificationCode(data.email)}
+        onResendCode={async () => {
+          const result = await sendVerificationCode(data.email);
+
+          if (result?.code) {
+            alert(`Ваш код подтверждения: ${result.code}`);
+          }
+        }}
         codeLoading={codeLoading}
       />,
 
@@ -531,6 +541,8 @@ export const RegisterProcess = () => {
     confirmPassword,
     weakPasswordAccepted,
     handleFileChange,
+    sendVerificationCode,
+    codeLoading,
   ]);
 
   return (

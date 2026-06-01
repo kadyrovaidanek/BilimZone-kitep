@@ -36,24 +36,17 @@ export const useRegister = () => {
   const [codeLoading, setCodeLoading] = useState(false);
 
   const sendVerificationCode = async (email: string) => {
-    try {
-      setCodeLoading(true);
+    setCodeLoading(true);
 
-      await API.post("/register/send-code/", {
-        email: email.trim().toLowerCase(),
+    try {
+      const response = await API.post("/register/send-code/", {
+        email,
       });
 
-      alert("Код подтверждения отправлен на email");
-      return true;
-    } catch (error: any) {
+      return response.data;
+    } catch (error) {
       console.log("SEND CODE ERROR:", error);
-
-      const message =
-        error?.response?.data?.email ||
-        "Не удалось отправить код подтверждения";
-
-      alert(message);
-      return false;
+      return null;
     } finally {
       setCodeLoading(false);
     }
