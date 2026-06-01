@@ -5,7 +5,7 @@ from django.conf import settings
 FAKE_BANK_BASE_URL = getattr(
     settings,
     "FAKE_BANK_BASE_URL",
-    "http://127.0.0.2:8001/api/bank",
+    "http://127.0.0.1:8001/api/bank",
 ).rstrip("/")
 
 
