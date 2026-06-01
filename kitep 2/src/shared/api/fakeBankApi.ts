@@ -1,5 +1,5 @@
 const BANK_API_URL =
-    import.meta.env.VITE_BANK_API_URL || "http://127.0.0.1:8010/api";
+    import.meta.env.VITE_BANK_API_URL || "https://bank-backend-anoq.onrender.com/api";
 
 export interface FakeBankCard {
     id: number;

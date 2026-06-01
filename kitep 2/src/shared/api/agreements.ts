@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "http://127.0.0.2:8000/api",
+    baseURL: "https://bilimzone-backend1.onrender.com/api",
 });
 
 export type AgreementAudience =

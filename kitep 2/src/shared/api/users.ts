@@ -2,7 +2,7 @@ import axios from "axios";
 import type { Publication } from "@/shared/api/publications";
 
 const API = axios.create({
-    baseURL: "http://127.0.0.2:8000/api",
+    baseURL: "https://bilimzone-backend1.onrender.com/api",
 });
 
 API.interceptors.request.use((config) => {

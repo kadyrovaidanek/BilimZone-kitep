@@ -4,7 +4,7 @@ import axios from "axios";
 import type { UserRegistrationData } from "@/entities/user/model/types";
 
 const API = axios.create({
-  baseURL: "http://127.0.0.2:8000/api",
+  baseURL: "https://bilimzone-backend1.onrender.com/api",
 });
 
 const buildReaderPayload = (data: UserRegistrationData) => ({
