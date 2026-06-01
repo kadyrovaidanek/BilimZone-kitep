@@ -24,3 +24,6 @@ logs/
 .DS_Store
 .idea/
 .vscode/
+# Django static files
+staticfiles/
+bilimzone_backend/staticfiles/

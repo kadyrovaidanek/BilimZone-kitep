@@ -2,11 +2,10 @@ import requests
 
 from django.conf import settings
 
-
 FAKE_BANK_BASE_URL = getattr(
     settings,
     "FAKE_BANK_BASE_URL",
-    "http://127.0.0.1:8001/api/bank",
+    "http://127.0.0.2:8001/api/bank",
 ).rstrip("/")
 
 
@@ -70,7 +69,8 @@ def is_insufficient_funds_error(bank_data):
     ).lower()
 
     return (
-        bank_data.get("code") in [
+        bank_data.get("code")
+        in [
             "insufficient_funds",
             "insufficient_balance",
             "not_enough_money",
