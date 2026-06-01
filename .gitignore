@@ -27,3 +27,10 @@ logs/
 # Django static files
 staticfiles/
 bilimzone_backend/staticfiles/
+
+# FakeBank generated files
+bank_bilimzone_v2/backend/staticfiles/
+bank_bilimzone_v2/backend/venv/
+bank_bilimzone_v2/backend/db.sqlite3
+bank_bilimzone_v2/frontend/node_modules/
+bank_bilimzone_v2/frontend/dist/
