@@ -165,8 +165,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 LIBREOFFICE_PATH = "/Applications/LibreOffice.app/Contents/MacOS/soffice"
 
-FAKE_BANK_BASE_URL = "http://127.0.0.1:8001/api/bank"
-
+FAKE_BANK_BASE_URL = os.environ.get(
+    "FAKE_BANK_BASE_URL", "http://127.0.0.1:8010/api/bank"
+)
 # Gmail SMTP for local email verification
 EMAIL_BACKEND = os.environ.get(
     "EMAIL_BACKEND",
