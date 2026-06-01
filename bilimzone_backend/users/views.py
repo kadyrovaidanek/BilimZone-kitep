@@ -7,11 +7,15 @@ from rest_framework import status
 
 from django.contrib.auth.hashers import check_password, make_password
 from django.conf import settings
-from django.core.mail import send_mail
+from .services.email_service import send_verification_email
 from django.utils import timezone
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes,
+)
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.permissions import AllowAny
 
@@ -161,12 +165,13 @@ class SendRegistrationCodeView(APIView):
         )
 
         try:
-            send_mail(
-                subject="Код подтверждения BilimZone",
-                message=f"Ваш код подтверждения BilimZone: {code}. Код действует 10 минут.",
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[email],
-                fail_silently=False,
+            send_verification_email(email, code)
+        except Exception as exc:
+            return Response(
+                {
+                    "email": f"Не удалось отправить код подтверждения: {type(exc).__name__}: {str(exc)}"
+                },
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
         except Exception as exc:
             return Response(
@@ -180,6 +185,8 @@ class SendRegistrationCodeView(APIView):
             {"message": "Код подтверждения отправлен на email"},
             status=status.HTTP_200_OK,
         )
+
+
 class VerifyRegistrationCodeView(APIView):
     authentication_classes = []
     permission_classes = [AllowAny]
@@ -231,6 +238,7 @@ class VerifyRegistrationCodeView(APIView):
             {"message": "Код подтверждён"},
             status=status.HTTP_200_OK,
         )
+
 
 class RegisterView(APIView):
     authentication_classes = []
@@ -436,7 +444,9 @@ class ProfileView(APIView):
                 profile.first_name = normalize_name(request.data.get("first_name"))
                 profile.father_name = normalize_name(request.data.get("father_name"))
                 profile.phone_number = normalize_text(request.data.get("phone_number"))
-                profile.specialization = normalize_text(request.data.get("specialization"))
+                profile.specialization = normalize_text(
+                    request.data.get("specialization")
+                )
                 profile.bio = normalize_text(request.data.get("bio"))
 
                 if photo:
@@ -481,9 +491,9 @@ def check_username(request):
     return Response(
         {
             "exists": exists,
-            "message": "Такой пользователь с таким логином уже существует"
-            if exists
-            else "",
+            "message": (
+                "Такой пользователь с таким логином уже существует" if exists else ""
+            ),
         }
     )
 
@@ -502,8 +512,8 @@ def check_email(request):
     return Response(
         {
             "exists": exists,
-            "message": "Такой пользователь с таким email уже существует"
-            if exists
-            else "",
+            "message": (
+                "Такой пользователь с таким email уже существует" if exists else ""
+            ),
         }
     )

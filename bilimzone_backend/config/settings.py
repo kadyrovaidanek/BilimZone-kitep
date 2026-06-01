@@ -189,3 +189,8 @@ CORS_ALLOWED_ORIGINS = os.environ.get(
 CSRF_TRUSTED_ORIGINS = os.environ.get(
     "CSRF_TRUSTED_ORIGINS", "http://localhost:5273"
 ).split(",")
+
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
+RESEND_FROM_EMAIL = os.environ.get(
+    "RESEND_FROM_EMAIL", "BilimZone <onboarding@resend.dev>"
+)
